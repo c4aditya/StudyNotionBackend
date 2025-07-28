@@ -1,0 +1,38 @@
+# Node modules (dependencies)
+node_modules/
+
+# Logs
+logs/
+*.log
+npm-debug.log*
+
+# Runtime data
+pids/
+*.pid
+*.seed
+
+# Environment variables (keep secrets safe!)
+.env
+
+# Debug/config editor folders
+.vscode/
+
+# OS generated files
+.DS_Store
+Thumbs.db
+
+# Optional npm cache directory
+.npm/
+
+# Test coverage output
+coverage/
+
+# MongoDB data dumps (if any)
+dump/
+
+# Misc packages
+*.tgz
+
+# Build output (if your app uses build steps)
+dist/
+build/
