@@ -221,60 +221,101 @@ async function login(req, res) {
 
         // get the data from request ki body 
 
-        const {email , password } = req.body ;
-  
+        const { email, password } = req.body;
+
         // perform some validation 
 
-        if(!email || !password){
+        if (!email || !password) {
             return res.status(403).json({
-                sucess:false,
-                message:"Please fill all feilds please try again "
+                sucess: false,
+                message: "Please fill all feilds please try again "
             })
         }
 
         // check user is already exit or not 
 
-        const isExistUser = await User.findOne({email});
+        const user = await User.findOne({ email });
 
-        if(!isExistUser){
+        if (!user) {
             return res.status(401).json({
-                sucess:false,
-                message:"User is not register please signup again"
+                sucess: false,
+                message: "User is not register please signup and try again"
             })
         }
 
         // compare the password 
 
-        if(await bcrypt.compare(password , isExistUser.password)){
-        
+        if (await bcrypt.compare(password, user.password)) {
+            
             // if password is match then create a JWT token 
+            // create a payloade 
 
-            const token = JWT.sign(payloade , process.env.JWT_SECRET , {
-                expiresIn:"2h"
+            const payloade = {
+                email: user.email,
+                id: user._id,
+                role: user.role
+            }
+            const token = JWT.sign(payloade, process.env.JWT_SECRET, {
+                expiresIn: "2h"
             });
-        
-        }else{
+
+            user.token = token;
+            user.password = undefined;
+
+            // create a cookie 
+            // we have to create options 
+            const options ={
+                expiresIn:new (Date.now() + 3*24*60*60*1000),
+                httpOnly:true,
+            }
+            res.cookie("token" , token , options).status(200).json({
+                sucess:true,
+                token,
+                user,
+                message:"You Are logged in Sucessfully  "
+            })
+
+        } else {
             return res.status(401).json({
                 sucess:false,
-                message:"Password is not match please try again "
+                message:"Password is not match please try again!"
             })
         }
 
 
-
-
-
-        
-
-
     } catch (error) {
-        console.log("Getting error while login ")
+        console.log("Getting error while login check login controller code once ");
+        console.log(error)
+        res.status(500).json({
+            sucess:false,
+            message:"Login Failer please try again "
+        })
 
     }
 
 }
 
+// Change password 
 
+async function changePassword(){
 
+    try{
 
-// change password  
+        // get email form the request ki body 
+        // enter old password , new passeord and confrim password 
+        // perforem some validation 
+        // update the changed password in your db 
+        // return responce 
+     
+        // geting the data from req ki body 
+        const {email,oldPassword , newPassword , confirmPassword } = req.body
+        // preform some validation 
+        
+
+    }catch(error){
+
+        console.log(error)
+        
+
+    }
+}
