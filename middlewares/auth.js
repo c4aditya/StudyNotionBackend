@@ -57,10 +57,46 @@ try{
 
 // check it is student 
 
-async function isStudent(){
+async function isStudent(req ,res ,next ){
     try{
+
+        if(req.user.role  !== "Student"){
+            return res.status(401).json({
+                sucess:false,
+                message:"User role is not match"
+            })
+        }
+
+    }catch(error){
+        console.log(error)
+         return res.status(500).json({
+            sucess:false,
+            message:"This is error is comes form the student function "
+         })
+        
+
+    }
+}
+
+async function isInstructor(req , res ,next) {
+
+    try{
+
+        if(req.user.role !== "Instructor"){
+            return res.status(401).josn({
+                success:false,
+                message:"Your role does't match with the instructor"
+            })
+        }
 
     }catch(error){
 
+        console.log(error)
+        return res.status(500).json({
+            sucess:false,
+            message:"Getting error in the instructor function"
+        })
+
     }
+    
 }
