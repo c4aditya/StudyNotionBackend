@@ -52,7 +52,15 @@ const mongoose = require("mongoose");
                 type:String,
         
             },
-      
+
+            token:{
+                type:String,
+            },
+
+            resetPasswordExp:{
+                type:Date,
+            },
+                  
              // for each student have specific course progress that's why we have to add speciic course report to the each and every students 
             courseProgress:{
                 type:mongoose.Schema.Types.ObjectId,
